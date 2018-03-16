@@ -1,11 +1,16 @@
-class Roll
+class Check
 
-  attr_reader :success, :critic, :score, :roll
+  attr_reader :success, :critic, :score, :roll, :status
 
-  def initialize( difficulty, attribute, skill=0 )
+  def initialize( attribute, skill=0 )
+    @attribute = attribute
+    @skill = skill
+  end
+
+  def roll( difficulty=10, bonus=0 )
     @roll = Hazard.s2d10
 
-    @score = @roll.result + attribute - 10 + skill
+    @score = @roll.result + @attribute + bonus + @skill
     @success = @score >= 10 + difficulty
     @critic = @roll.rolls[0] == @roll.rolls[1]
 

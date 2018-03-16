@@ -30,9 +30,9 @@ class Party
     directions = @dungeon.available_directions
     puts "Available directions are #{directions}"
 
-    @members.each{ |m| m.choose_direction!( directions ) }
+    @members.each{ |m| m.choose_direction!( @dungeon.current_room, directions ) }
 
-    puts comma_comma_and( @members.map{ |e| e.name + ' wants to go ' + e.chosen_direction.to_s } )
+    puts comma_comma_and( @members.map{ |e| e.name + ' wants to go ' + e.chosen_direction.to_s } ) + '.'
     puts
 
     if party_disagree?( @members )
@@ -42,6 +42,7 @@ class Party
       @chosen_direction = @members.first.chosen_direction
     end
 
+    @members.first.remember_direction( @dungeon.current_room, @chosen_direction )
   end
 
   private
@@ -75,7 +76,7 @@ class Party
       @party_disagree = true
       names = comma_comma_and( more_willing_characters.map{ |e| e.name } )
       directions = comma_comma_and( more_willing_characters.map{ |e| e.name + ' wants to go ' + e.chosen_direction.to_s } )
-      puts "#{names} disagree. #{directions}"
+      puts "#{names} disagree. #{directions}."
     end
     more_willing_characters
   end
@@ -90,7 +91,7 @@ class Party
     return '' if strings.empty?
     return strings.first if strings.count == 1
     last_string = strings.pop
-    ( strings.empty? ? '' : strings.join( ', ' ) ) + ' and ' + last_string + '.'
+    ( strings.empty? ? '' : strings.join( ', ' ) ) + ' and ' + last_string
   end
 
 end

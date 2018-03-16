@@ -5,7 +5,7 @@ require 'dungeon'
 class Run
 
   def initialize
-    @dungeon = Dungeon.new( 3 )
+    @dungeon = Dungeon.new( 8 )
     @dungeon.generate
   end
 
