@@ -6,11 +6,15 @@ class Run
 
   def initialize
     @dungeon = Dungeon.new( 4 )
+    @dungeon.generate
   end
 
   def start
-    party = Party.new
-    party.will_checks
+    1.upto(10) do
+      party = Party.new( @dungeon )
+      party.will_checks
+      puts '*'*20
+    end
   end
 
 end

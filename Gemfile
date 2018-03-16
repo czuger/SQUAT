@@ -8,3 +8,10 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem 'square-dungeon-gen', path: '../square-dungeon-gen'
 gem 'hazard'
+
+group :dev do
+  gem 'simplecov'
+  gem 'minitest'
+end
+
+
