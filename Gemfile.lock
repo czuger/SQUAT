@@ -1,17 +1,22 @@
+PATH
+  remote: ../square-dungeon-gen
+  specs:
+    square-dungeon-gen (1.0.0)
+      hazard (~> 1)
+      rmagick (~> 2.16)
+
 GEM
   remote: https://rubygems.org/
   specs:
     hazard (1.0.3)
     rmagick (2.16.0)
-    square-dungeon-gen (1.0.0)
-      hazard (~> 1)
-      rmagick (~> 2.16)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  square-dungeon-gen
+  hazard
+  square-dungeon-gen!
 
 BUNDLED WITH
    1.16.1

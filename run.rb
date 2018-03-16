@@ -1,3 +1,4 @@
+require_relative 'lib/character'
 require 'dungeon'
 
 class Run
@@ -7,7 +8,8 @@ class Run
   end
 
   def start
-
+    characters = 1.upto(4).map{ |c| Character.generate }
+    p characters
   end
 
 end
