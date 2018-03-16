@@ -35,7 +35,7 @@ class Character
   end
 
   def path_finding_check
-    @path_finding_check.roll( 12 )
+    @path_finding_check.roll( 15 )
     @path_finding_will_bonus = 10 if @path_finding_check.critic
     @path_finding_check.success?
   end
