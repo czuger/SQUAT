@@ -1,4 +1,5 @@
 require_relative 'lib/character'
+require_relative 'lib/party'
 require 'dungeon'
 
 class Run
@@ -8,8 +9,8 @@ class Run
   end
 
   def start
-    characters = 1.upto(4).map{ |c| Character.generate }
-    p characters
+    party = Party.new
+    party.will_checks
   end
 
 end
