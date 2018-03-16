@@ -5,14 +5,15 @@ require 'dungeon'
 class Run
 
   def initialize
-    @dungeon = Dungeon.new( 4 )
+    @dungeon = Dungeon.new( 8 )
     @dungeon.generate
   end
 
   def start
-    1.upto(10) do
-      party = Party.new( @dungeon )
-      party.will_checks
+    party = Party.new( @dungeon, 8 )
+
+    1.upto(20) do
+      party.choose_direction
       puts '*'*20
     end
   end

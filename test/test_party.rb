@@ -1,61 +1,24 @@
 require_relative 'test_helper'
 
-class Party < Minitest::Test
+class TestParty < Minitest::Test
 
   def setup
-    @party = Party.new
+    @dungeon = Dungeon.new( 4 )
+    @dungeon.generate
+    @party = Party.new( @dungeon, 4 )
   end
 
-  def test_generate_a_full_dungeon
-    refute @d.rooms[[2,1]]
-    assert @d.rooms[[1,1]]
+  def test_comma_comma_and_with_3_names_party
+    assert_equal 'Han, Luke and Yoda', @party.send( 'comma_comma_and', %w( Han Luke Yoda ) )
   end
 
-  def test_save_and_load_from_json
-    new_d = Dungeon.from_json( @d.to_json )
-    assert_equal @d.rooms[[1,1]].room_id, new_d.rooms[[1,1]].room_id
-    refute new_d.rooms[[2,1]]
+  def test_comma_comma_and_with_2_names_party
+    assert_equal 'Han and Luke', @party.send( 'comma_comma_and', %w( Han Luke ) )
   end
 
-  def test_save_and_load_from_json_and_navigate
-    new_d = Dungeon.from_json( @d.to_json )
-    assert_equal @d.rooms[[1,1]].room_id, new_d.rooms[[1,1]].room_id
-    refute new_d.rooms[[2,1]]
-    @d.set_next_room(:left)
+  def test_comma_comma_and_with_1_names_party
+    p @party.send( 'comma_comma_and', %w( Han ) )
+    assert_equal  'Han', @party.send( 'comma_comma_and', %w( Han ) )
   end
-
-  def test_full_dungeon_drawing
-    @d.draw('out/tmp_full.jpg')
-    assert File.exist?('out/tmp_full.jpg')
-    `rm out/tmp_full.jpg`
-  end
-
-  def test_room_dungeon_drawing
-    @d.draw_current_room('out/tmp_room.jpg')
-    assert File.exist?('out/tmp_room.jpg')
-    `rm out/tmp_room.jpg`
-  end
-
-  def test_dungeon_printing
-    @d.print_dungeon('out/tmp_dungeon.txt')
-    assert File.exist?('out/tmp_dungeon.txt')
-    `rm out/tmp_dungeon.txt`
-  end
-
-  def test_directions
-    assert_equal [:left, :right], @d.available_directions
-  end
-
-  def test_navigation_in_dungeon
-    @d.set_next_room(:left)
-    @d.draw_current_room('out/tmp_room.jpg')
-    assert File.exist?('out/tmp_room.jpg')
-    assert_equal [:right], @d.available_directions
-    @d.set_next_room(:right)
-    @d.draw_current_room('out/tmp_room.jpg')
-    assert File.exist?('out/tmp_room.jpg')
-    assert_equal [:left, :right], @d.available_directions
-  end
-
 
 end

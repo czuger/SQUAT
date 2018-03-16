@@ -1,21 +1,33 @@
+require 'dungeon'
+require_relative 'character'
+
 class Party
 
-  def initialize( dungeon )
-    @members = 1.upto(4).map{ |c| Character.generate }
+  def initialize( dungeon, party_size )
+    @members = 1.upto(party_size).map{ |c| Character.generate }
     @party_disagree = false
     @dungeon = dungeon
   end
 
-  def will_checks
-    @party_disagree = false
-    more_willing_characters = @members
-    more_willing_characters.each{ |m| m.choose_direction!( @dungeon.available_directions ) }
-    while more_willing_characters.count > 1 do
-      more_willing_characters = will_check( more_willing_characters )
+  def choose_direction
+    @members.each{ |m| m.choose_direction!( @dungeon.available_directions ) }
+    chosen_directions = @members.map{ |m| m.chosen_direction }.uniq
+    if chosen_directions.count == 1
+      puts "Everybody agree to go #{chosen_directions.first}"
+    else
+      will_checks
     end
   end
 
   private
+
+  def will_checks
+    @party_disagree = false
+    more_willing_characters = @members
+    while more_willing_characters.count > 1 do
+      more_willing_characters = will_check( more_willing_characters )
+    end
+  end
 
   def will_check( more_willing_characters )
     max_will = 0
@@ -34,16 +46,19 @@ class Party
       end
     else
       @party_disagree = true
-      names = more_willing_characters.map{ |e| e.name }.join( ', ')
-      directions = more_willing_characters.map{ |e| e.name + ' wants to go ' + e.chosen_direction.to_s }.join( ', ')
+      names = comma_comma_and( more_willing_characters.map{ |e| e.name } )
+      directions = comma_comma_and( more_willing_characters.map{ |e| e.name + ' wants to go ' + e.chosen_direction.to_s } )
       puts "#{names} disagree. #{directions}"
     end
     more_willing_characters
   end
 
   def comma_comma_and( strings )
+    raise 'strings should be an array' unless strings.is_a? Array
+    return '' if strings.empty?
+    return strings.first if strings.count == 1
     last_string = strings.pop
-    ( strings.empty? ? '' : strings.join( ', ' ) ) + 'and ' + last_string
+    ( strings.empty? ? '' : strings.join( ', ' ) ) + ' and ' + last_string
   end
 
 end
