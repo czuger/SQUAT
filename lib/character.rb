@@ -22,14 +22,12 @@ class Character
   def will_roll
     r = Roll.new( 0, @vol )
     @last_will_score = r.score
-    @last_will_score += 10 if r.critical_success?
-    @last_will_score -= 10 if r.critical_failure?
+    @last_will_score += 10 if r.critic
     @last_will_score
   end
 
   def choose_direction!( directions )
     @chosen_direction = directions.sample
-    a = nil
   end
 
 end
