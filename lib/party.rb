@@ -3,17 +3,36 @@ require_relative 'character'
 
 class Party
 
+  attr_reader :chosen_direction
+
   def initialize( dungeon, party_size )
     @members = 1.upto(party_size).map{ |c| Character.generate }
     @party_disagree = false
     @dungeon = dungeon
+    @chosen_direction = nil
+  end
+
+  def walk_in_dungeon
+    while @dungeon.current_room.content != 'H' do
+      choose_direction
+      @dungeon.set_next_room( @chosen_direction )
+      content = @dungeon.current_room.content ? @dungeon.current_room.content : 'nothing'
+      puts "Party arive into room #{@dungeon.current_room.room_id}. Room contains #{@dungeon.current_room.content}"
+      puts
+      puts '*'*40
+      puts
+    end
+    puts 'Party find the treasure'
   end
 
   def choose_direction
-    @members.each{ |m| m.choose_direction!( @dungeon.available_directions ) }
+    directions = @dungeon.available_directions
+    puts "Available directions are #{directions}"
+    @members.each{ |m| m.choose_direction!( directions ) }
     chosen_directions = @members.map{ |m| m.chosen_direction }.uniq
     if chosen_directions.count == 1
       puts "Everybody agree to go #{chosen_directions.first}"
+      @chosen_direction = chosen_directions.first
     else
       will_checks
     end
@@ -44,6 +63,7 @@ class Party
       else
         puts "#{c.name} knows where to go and has choosed #{c.chosen_direction}"
       end
+      @chosen_direction = c.chosen_direction
     else
       @party_disagree = true
       names = comma_comma_and( more_willing_characters.map{ |e| e.name } )
